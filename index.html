@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Are You Color Blind?</title>
+	</head>
+	<body>
+		<div id ="container">
+			<h1 id="title">Aptitude Test . . . and the Answers!</h1>
+			<main id="main">
+				<div id="result-container">
+					<h1>Sorry, you shouldn't be a <span id="occupation-wrong"></span>!</h1>
+					<h3>Maybe an <span id="occupation-try"></span>?</h3>
+				</div>
+			</main>
+			<ul id="option-container">
+				<li class="option-wrapper"><div class="option btn">1</div></li>
+				<li class="option-wrapper"><div class="option btn">2</div></li>
+				<li class="option-wrapper"><div class="option btn">3</div></li>
+				<li class="option-wrapper"><div class="option btn">4</div></li>
+			</ul>
+			<div id="next-btn" class="btn">Try again</div>
+		</div>
+	</body>
+</html>
+<style>
+		*{margin: 0;padding: 0;}
+		body{font-family: helvetica, sans-serif;}
+		ul{list-style: none;}
+		#container
+		{
+			box-sizing: border-box;
+			display: flex;
+			flex-direction: column;
+			height: 100vh;
+			background-color: orange;
+			padding-bottom: 10px;
+		}
+		#main{
+			flex: 1;
+			position: relative;
+		}
+		#option-container
+		{
+			display: flex;
+		}
+		.viewing-result #option-container
+		{
+			display: none;
+		}
+		#result-container
+		{
+			display: none;
+			position:  absolute;
+			left: 50%;
+			top: 50%;
+			transform:  translate(-50%, -50%);
+		}
+		.viewing-result #result-container
+		{
+			display: block;
+		}
+		.option-wrapper
+		{
+			flex: 1;
+			padding: 10px;
+			text-align: center;
+		}
+		.btn
+		{
+			
+			padding: 20px;
+			cursor: pointer;
+			font-size: 20px;
+			border: 5px solid #000;
+			border-top: 5px solid transparent;
+			border-left: 5px solid transparent;
+			background-color: #eee;
+		}
+		.btn:hover
+		{
+			background-color: #fff;
+			transition: background-color .25s;
+			/*border-top: 5px solid #000;
+			border-left: 5px solid #000;
+			border-right: 5px solid transparent;
+			border-bottom: 5px solid transparent;*/
+		}
+		.btn:active
+		{
+			background-color: #ddd;
+			border-top: 5px solid #000;
+			border-left: 5px solid #000;
+			border-right: 5px solid transparent;
+			border-bottom: 5px solid transparent;
+		}
+
+		#next-btn
+		{
+			display: none;
+			margin: 0 10px 10px 10px;
+			text-align: center;
+		}
+		.viewing-result #next-btn
+		{
+			display: block;
+		}
+</style>
+<script>
+	var body = document.body;
+	var color_options = [
+		'blue',
+		'red',
+		'pink',
+		'green',
+		'orange',
+		'purple',
+		'brown',
+		'yellow'
+	];
+	var occupation_options = [
+		'be a pilot',
+		'be a pharmacist',
+		'be a firefighter',
+		'be a doctor',
+		'join navy',
+		'join military',
+		'be an electrician',
+		'be a public driver',
+		'be a designer',
+		'be a police',
+		'be a chef',
+		'be a florist'
+	];
+	function shuffle(array) {
+		let currentIndex = array.length,  randomIndex;
+		// While there remain elements to shuffle...
+		while (currentIndex != 0) {
+			// Pick a remaining element...
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex--;
+			// And swap it with the current element.
+			[array[currentIndex], array[randomIndex]] = [
+				array[randomIndex], array[currentIndex]];
+		}
+		return array;
+	}
+	function swapColor(target){
+		shuffle(color_options);
+		let next_color_index = parseInt( Math.random() * color_options.length);
+		let next_color = color_options[next_color_index];
+		while(next_color == current_color)
+		{
+			next_color_index = parseInt( Math.random() * color_options.length);
+			next_color = color_options[next_color_index];
+		}
+		setTimeout(function(){
+			current_color_index = next_color_index;
+			current_color = next_color;
+			target.style.backgroundColor = next_color;
+		}, 0);
+		
+		
+	}
+	function swapOptions(targets){
+		let idx = 0;
+		[].forEach.call(targets, function(el, i){
+			if(idx == current_color_index)
+				idx++;
+			el.innerText = color_options[idx];
+			idx++;
+		});
+	}
+	function swapOccupation(target_wrong, target_try){
+		let current_option_wrong = target_wrong.innerText;
+		let current_option_try = target_try.innerText;
+		let next_index_wrong = parseInt(Math.random() * occupation_options.length);
+		let next_option_wrong = occupation_options[next_index_wrong];
+		while(next_option_wrong == current_option_try)
+		{
+			next_index_wrong = parseInt(Math.random() * occupation_options.length);
+			next_option_wrong = occupation_options[next_index_wrong];
+		}
+		let next_index_try = parseInt(Math.random() * occupation_options.length);
+		let next_option_try = occupation_options[next_index_try];
+		while(next_option_try == next_option_wrong)
+		{
+			next_index_try = parseInt(Math.random() * occupation_options.length);
+			next_option_try = occupation_options[next_index_try];
+		}
+		// target.setAttribute('current-index', next_index);
+		target_wrong.innerText = next_option_wrong;
+		target_try.innerText = next_option_try;
+	}
+	
+	function swapScene(){
+		if(body.classList.contains('viewing-result'))
+		{
+			body.classList.remove('viewing-result');
+			swapColor(sContainer, current_color);
+			swapOptions(sOptions, current_color_index);
+			swapOccupation(sOccupation_wrong, sOccupation_try);
+		}
+		else
+		{
+			body.classList.add('viewing-result');
+		}
+	}
+	
+	shuffle(color_options);
+	var sContainer = document.getElementById('container');
+	var current_color_index = parseInt( Math.random() * color_options.length);
+	var current_color = color_options[current_color_index];
+	swapColor(sContainer);
+	var sOptions = document.getElementsByClassName('option');
+	swapOptions(sOptions, current_color_index);
+
+	var sOccupation_wrong = document.getElementById('occupation-wrong');
+	var sOccupation_try = document.getElementById('occupation-try');
+	swapOccupation(sOccupation_wrong, sOccupation_try);
+
+	[].forEach.call(sOptions, function(el, i){
+		el.addEventListener('click', function(){
+			swapScene();
+		});
+	});
+	var sNext_btn = document.getElementById('next-btn');
+	sNext_btn.addEventListener('click', function(){
+		swapScene();
+	});
+</script>
