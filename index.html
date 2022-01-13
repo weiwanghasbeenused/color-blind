@@ -13,7 +13,7 @@
 				</div>
 				<div id="result-container">
 					<h1>Sorry, you shouldn't <span id="occupation-wrong"></span>!</h1>
-					<h3>Maybe <span id="occupation-try"></span>?</h3>
+					<h3>Maybe an artist?</h3>
 				</div>
 			</main>
 			<ul id="option-container">
@@ -61,18 +61,18 @@
 		}
 		#object
 		{
-			/*width: 70vw;*/
-			/*height: 70vw;*/
 			border-radius: 50%;
 			position: absolute;
 			left: 50%;
 			top: 50%;
 			transform: translate(-50%, -50%);
-			transition: filter .75s, transform .25s, background-color 1.5s;
-			/*z-index: 5;*/
+			transition: filter .75s, backdrop-filter.75s, transform .25s, background-color 1.5s;
 		}
 		.viewing-result #object
 		{
+			-webkit-backdrop-filter: blur(100px);
+			backdrop-filter: blur(100px);
+			-webkit-filter: blur(100px);
 			filter: blur(100px);
 			transform: translate(-50%, -50%) scale(1.2);
 		}
@@ -237,11 +237,13 @@
 			current_color = next_color;
 			target.style.backgroundColor = next_color;
 			body.setAttribute('hue', color_options[next_color_index].hue);
+			// console.log(current_color_index, color_options[current_color_index]);
 		}, 0);
 		
 		
 	}
 	function swapOptions(targets){
+		// console.log(current_color_index, color_options[current_color_index]);
 		let idx = 0;
 		[].forEach.call(targets, function(el, i){
 			if(idx == current_color_index)
@@ -250,25 +252,38 @@
 			idx++;
 		});
 	}
-	function swapOccupation(target_wrong, target_try){
-		let current_option_wrong = target_wrong.innerText;
-		let current_option_try = target_try.innerText;
-		let next_index_wrong = parseInt(Math.random() * occupation_options.length);
-		let next_option_wrong = occupation_options[next_index_wrong];
-		while(next_option_wrong == current_option_try)
-		{
-			next_index_wrong = parseInt(Math.random() * occupation_options.length);
-			next_option_wrong = occupation_options[next_index_wrong];
+	function swapOccupation(target_wrong, target_try = false){
+		if(target_try) {
+			let current_option_wrong = target_wrong.innerText;
+			let current_option_try = target_try.innerText;
+			let next_index_wrong = parseInt(Math.random() * occupation_options.length);
+			let next_option_wrong = occupation_options[next_index_wrong];
+			while(next_option_wrong == current_option_try)
+			{
+				next_index_wrong = parseInt(Math.random() * occupation_options.length);
+				next_option_wrong = occupation_options[next_index_wrong];
+			}
+			let next_index_try = parseInt(Math.random() * occupation_options.length);
+			let next_option_try = occupation_options[next_index_try];
+			while(next_option_try == next_option_wrong)
+			{
+				next_index_try = parseInt(Math.random() * occupation_options.length);
+				next_option_try = occupation_options[next_index_try];
+			}
+			target_wrong.innerText = next_option_wrong;
+			target_try.innerText = next_option_try;
+		} else {
+			let current_option_wrong = target_wrong.innerText;
+			let next_index_wrong = parseInt(Math.random() * occupation_options.length);
+			let next_option_wrong = occupation_options[next_index_wrong];
+			while(next_option_wrong == current_option_wrong)
+			{
+				next_index_wrong = parseInt(Math.random() * occupation_options.length);
+				next_option_wrong = occupation_options[next_index_wrong];
+			}
+			target_wrong.innerText = next_option_wrong;
 		}
-		let next_index_try = parseInt(Math.random() * occupation_options.length);
-		let next_option_try = occupation_options[next_index_try];
-		while(next_option_try == next_option_wrong)
-		{
-			next_index_try = parseInt(Math.random() * occupation_options.length);
-			next_option_try = occupation_options[next_index_try];
-		}
-		target_wrong.innerText = next_option_wrong;
-		target_try.innerText = next_option_try;
+		
 	}
 	
 	function swapScene(){
@@ -276,8 +291,11 @@
 		{
 			body.classList.remove('viewing-result');
 			swapColor(sObject);
-			swapOptions(sOptions, current_color_index);
-			swapOccupation(sOccupation_wrong, sOccupation_try);
+			setTimeout(function(){
+				swapOptions(sOptions, current_color_index);
+			}, 0);
+			swapOccupation(sOccupation_wrong);
+			
 		}
 		else
 		{
@@ -296,8 +314,8 @@
 	swapOptions(sOptions, current_color_index);
 
 	var sOccupation_wrong = document.getElementById('occupation-wrong');
-	var sOccupation_try = document.getElementById('occupation-try');
-	swapOccupation(sOccupation_wrong, sOccupation_try);
+	// var sOccupation_try = document.getElementById('occupation-try');
+	swapOccupation(sOccupation_wrong);
 
 	[].forEach.call(sOptions, function(el, i){
 		el.addEventListener('click', function(){
