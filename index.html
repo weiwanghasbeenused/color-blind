@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Are You Color Blind?</title>
+		<title>Aptitude Test</title>
 		<link rel="stylesheet" href="assets/fonts/fonts.css">
+		<script type="text/javascript" src="assets/js/screenfull.min.js"></script>
 	</head>
-	<body>
+	<body class="viewing-welcome">
+		
+		<div id="mask"></div>
 		<div id ="container">
-			<h1 id="title">Aptitude Test<br><span id="and">&</span> the Answers!</h1>
+			<h1 id="title">Pick the right career!</h1>
 			<main id="main">
+				<div id="welcome-btn">Start the test</div>
 				<div id="object-container">
 					<div id="object"></div>
 				</div>
@@ -70,8 +74,8 @@
 		}
 		.viewing-result #object
 		{
-			-webkit-backdrop-filter: blur(100px);
-			backdrop-filter: blur(100px);
+			/*-webkit-backdrop-filter: blur(100px);*/
+			/*backdrop-filter: blur(100px);*/
 			-webkit-filter: blur(100px);
 			filter: blur(100px);
 			transform: translate(-50%, -50%) scale(1.2);
@@ -84,6 +88,7 @@
 			font-family: luxurious_romanregular, serif;
 			font-size: 28px;
 			line-height: 0.75em;
+			z-index: 1000;
 		}
 		#and
 		{
@@ -128,7 +133,7 @@
 		.viewing-result #result-container
 		{
 			opacity: 1;
-			transition: opacity 1s .5s;
+			transition: opacity 1s 1s;
 		}
 		.option-wrapper
 		{
@@ -151,10 +156,6 @@
 		{
 			background-color: #fff;
 			transition: background-color .25s;
-			/*border-top: 5px solid #000;
-			border-left: 5px solid #000;
-			border-right: 5px solid transparent;
-			border-bottom: 5px solid transparent;*/
 		}
 		.btn:active
 		{
@@ -182,6 +183,139 @@
 			left: 0px;
 			bottom: 10px;
 			transition: left 0s 2s;
+		}
+
+		#welcome-btn
+		{
+			padding: 10px 30px;
+			border: 2px solid #000;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 1000;
+			cursor: pointer;
+			font-family: luxurious_romanregular, serif;
+			font-size: 28px;
+			opacity: 0;
+			pointer-events: none;
+		}
+		#welcome-btn:hover
+		{
+			background-color: #fff;
+		}
+		#mask
+		{
+			width: 100vw;
+			max-width: 100%;
+			height:  100vh;
+			background-color: #eee;
+			/*opacity: 0.5;*/
+			z-index: 950;
+			position: fixed;
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity 1s;
+		}
+		.viewing-welcome #mask
+		{
+			opacity: .25;
+			pointer-events: initial;
+		}
+		.viewing-welcome #welcome-btn
+		{
+			opacity: 1;
+			pointer-events: initial;
+		}
+		.viewing-welcome #option-container
+		{
+			opacity: 0;
+		}
+		.viewing-welcome #object
+		{
+			animation: saver 40s infinite linear;
+			transform: translate(-50%, -50%) scale(3);
+		}
+
+		@keyframes saver {
+			0% {
+				background-color: blue;
+				-webkit-filter: blur(0);
+				filter: blur(0);
+			}
+			6.25% {
+				-webkit-filter: blur(100px);
+				filter: blur(100px);
+			}
+			12.5% {
+				background-color: red;
+				-webkit-filter: blur(0);
+				filter: blur(0);
+			}
+			18.75% {
+				-webkit-filter: blur(100px);
+				filter: blur(100px);
+			}
+			25% {
+				background-color: pink;
+				-webkit-filter: blur(0);
+				filter: blur(0);
+			}
+			31.25% {
+				-webkit-filter: blur(100px);
+				filter: blur(100px);
+			}
+			37.5% {
+				background-color: green;
+				-webkit-filter: blur(0);
+				filter: blur(0);
+			}
+			43.75% {
+				-webkit-filter: blur(100px);
+				filter: blur(100px);
+			}
+			50% {
+				background-color: orange;
+				-webkit-filter: blur(0);
+				filter: blur(0);
+			}
+			56.25% {
+				-webkit-filter: blur(100px);
+				filter: blur(100px);
+			}
+			62.5% {
+				background-color: purple;
+				-webkit-filter: blur(0);
+				filter: blur(0);
+			}
+			68.75%
+			{
+				-webkit-filter: blur(100px);
+				filter: blur(100px);
+			}
+			75% {
+				background-color: brown;
+				-webkit-filter: blur(0);
+				filter: blur(0);
+			}
+			81.25% {
+				-webkit-filter: blur(100px);
+				filter: blur(100px);
+			}
+			87.5% {
+				background-color: yellow;
+				-webkit-filter: blur(0);
+				filter: blur(0);
+			}
+			93.75% {
+				-webkit-filter: blur(100px);
+				filter: blur(100px);
+			}
+			100% {
+				background-color: blue;
+				-webkit-filter: blur(0);
+				filter: blur(0);
+			}
 		}
 </style>
 <script>
@@ -331,4 +465,22 @@
 	var object_size = 0.7 * Math.min(wW, wH);
 	sObject.style.height = object_size + 'px';
 	sObject.style.width = object_size + 'px';
+	window.addEventListener('resize', function(){
+		wW = window.innerWidth;
+		wH = window.innerHeight;
+		object_size = 0.7 * Math.min(wW, wH);
+		sObject.style.height = object_size + 'px';
+		sObject.style.width = object_size + 'px';
+	});
+
+	window.addEventListener('keydown', function(e){
+		console.log(e.keyCode);
+		if(e.keyCode == '70')
+		{
+			screenfull.toggle(body);
+		}
+	});
+
+	let sWelcome_btn = document.getElementById('welcome-btn');
+	if(sWelcome_btn) sWelcome_btn.addEventListener('click', () => { body.classList.remove('viewing-welcome'); });
 </script>
