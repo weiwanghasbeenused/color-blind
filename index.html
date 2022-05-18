@@ -2,485 +2,582 @@
 <html>
 	<head>
 		<title>Aptitude Test</title>
-		<link rel="stylesheet" href="assets/fonts/fonts.css">
-		<script type="text/javascript" src="assets/js/screenfull.min.js"></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap" rel="stylesheet">
+		<script src="assets/js/colors.js"></script>
 	</head>
-	<body class="viewing-welcome">
-		
-		<div id="mask"></div>
-		<div id ="container">
-			<h1 id="title">Pick the right career!</h1>
-			<main id="main">
-				<div id="welcome-btn">Start the test</div>
-				<div id="object-container">
-					<div id="object"></div>
+	<body class="">
+		<div id="main-container" class="viewing-welcome">
+			<!-- <div id="mask"></div> -->
+			<div id="progression-container"><div id="progression">1</div><div id="step-total">3</div></div>
+			<h1 id="prompt" class="lux">What color is this? </h1>
+			<div id ="container">
+				
+				<div id="cb-main">
+					<div id="welcome-container">
+						<h1 id="title" class="lux">Pick the right career!</h1>
+						<div id="welcome-btn" class="btn">Start</div>
+					</div>
+					<div id="object-container">
+						<div id="object"></div>
+					</div>
+					<div id="result-container">
+						<h1>Sorry, you shouldn't <span id="occupation-wrong"></span>!</h1>
+						<h3>Maybe an artist?</h3>
+					</div>
 				</div>
-				<div id="result-container">
-					<h1>Sorry, you shouldn't <span id="occupation-wrong"></span>!</h1>
-					<h3>Maybe an artist?</h3>
-				</div>
-			</main>
-			<ul id="option-container">
-				<li class="option-wrapper"><div class="option btn">1</div></li>
-				<li class="option-wrapper"><div class="option btn">2</div></li>
-				<li class="option-wrapper"><div class="option btn">3</div></li>
-				<li class="option-wrapper"><div class="option btn">4</div></li>
-			</ul>
+				<ul id="option-container">
+					<li class="option-wrapper"><div class="option btn">1</div></li>
+					<li class="option-wrapper"><div class="option btn">2</div></li>
+					<li class="option-wrapper"><div class="option btn">3</div></li>
+					<li class="option-wrapper"><div class="option btn">4</div></li>
+				</ul>
+				
+			</div>
 			<div id="next-btn" class="btn">Try again</div>
 		</div>
+		<style>
+			/*@font-face {
+			    font-family: 'luxurious_romanregular';
+			    src: url('luxuriousroman-regular-webfont.woff2') format('woff2'),
+			         url('luxuriousroman-regular-webfont.woff') format('woff'),
+			         url('luxuriousroman-regular-webfont.ttf') format('truetype');
+			    font-weight: normal;
+			    font-style: normal;
+
+			}*/
+
+
+
+
+			@font-face {
+			    font-family: 'neonderthawregular';
+			    src: url('neonderthaw-regular-webfont.woff2') format('woff2'),
+			         url('neonderthaw-regular-webfont.woff') format('woff'),
+			         url('neonderthaw-regular-webfont.ttf') format('truetype');
+			    font-weight: normal;
+			    font-style: normal;
+
+			}
+				*{margin: 0;padding: 0; font-weight: normal;}
+				#main-container{font-family: helvetica, sans-serif; overflow: hidden; width: 100vw; max-width: 100%; position: relative;}
+				ul{list-style: none;}
+				#container
+				{
+					box-sizing: border-box;
+					display: flex;
+					flex-direction: column;
+					height: 100vh;
+					background-color: #ddd;
+					padding-bottom: 10px;
+				}
+				#cb-main{
+					flex: 1;
+					position: relative;
+				}
+				#option-container
+				{
+					display: flex;
+					position: relative;
+					z-index: 10;
+					transition: opacity 1s, transform 1s;
+				}
+				.viewing-result #option-container
+				{
+					visibility: hidden;
+					pointer-events: none;
+					transition: opacity 0s, transform 0s;
+				}
+				#object-container
+				{
+					width: 100%;
+					height: 100%;
+				}
+				#object
+				{
+					border-radius: 50%;
+					position: absolute;
+					left: 50%;
+					top: 50%;
+					transform: translate(-50%, -50%);
+					transition: filter 1s, transform 1s, background-color 1.5s;
+				}
+				.transition #object
+				{
+					transition: filter 0s, transform 1s, background-color 1.5s;
+					-webkit-filter: blur(100px);
+					filter: blur(100px);
+				}
+				.transition #option-container
+				{
+					transition: opacity 0s, transform 0s;
+					opacity: 0;
+					transform: translate(0, 50px);
+				}
+				.viewing-result #object
+				{
+					/*-webkit-backdrop-filter: blur(100px);*/
+					/*backdrop-filter: blur(100px);*/
+					-webkit-filter: blur(100px);
+					filter: blur(100px);
+					transform: translate(-50%, -50%) scale(1.2);
+				}
+				.viewing-welcome #object
+				{
+					transition: filter 1s, transform 0s, background-color 1.5s;
+				}
+				#title
+				{
+					/*position: absolute;*/
+					/*top: 20px;*/
+					/*left: 20px;*/
+					font-size: 48px;
+					/*line-height: 0.75em;*/
+					z-index: 1000;
+					opacity: 0;
+					margin-bottom: 30px;
+				}
+				.viewing-welcome #title
+				{
+					opacity: 1;
+				}
+				#and
+				{
+					/*font-family: neonderthawregular, serif;*/
+					font-size: 2em;
+					position: relative;
+					top: 0.2em;
+					color: #fff;
+				}
+				#result-container
+				{
+					opacity: 0;
+					pointer-events: none;
+					position:  absolute;
+					max-width: 560px;
+					left: 50vw;
+					top: 50vh;
+					transform:  translate(-50%, -50%);
+					font-family: 'Luxurious Roman', cursive;
+					font-size: 40px;
+					line-height: 2em;
+					text-align: center;
+					
+				}
+				#main-container[hue="dark"] #result-container
+				{
+					color: #ddd;
+				}
+				#result-container h1
+				{
+					/*color: #ddd;*/
+					/*-webkit-text-stroke-width: 1px;*/
+		  			/*-webkit-text-stroke-color: black;*/
+				}
+				#result-container h3
+				{
+					font-family: sans-serif;
+					font-size: 28px;
+					line-height: 1em;
+					margin-top: 20px;
+				}
+				.viewing-result #result-container
+				{
+					opacity: 1;
+					transition: opacity 1s 1.5s;
+				}
+				.option-wrapper
+				{
+					flex: 1;
+					padding: 10px;
+					text-align: center;
+				}
+				.btn
+				{
+					
+					padding: 20px;
+					cursor: pointer;
+					font-size: 20px;
+					border: 5px solid #000;
+					border-top: 5px solid transparent;
+					border-left: 5px solid transparent;
+					background-color: #eee;
+				}
+				.btn:hover
+				{
+					background-color: #fff;
+					transition: background-color .25s;
+				}
+				.btn:active
+				{
+					background-color: #ddd;
+					border-top: 5px solid #000;
+					border-left: 5px solid #000;
+					border-right: 5px solid transparent;
+					border-bottom: 5px solid transparent;
+				}
+
+				#next-btn
+				{
+					position: absolute;
+					left: -10000px;
+					width: calc(100% - 20px);
+					margin: 10px 10px 10px 10px;
+					text-align: center;
+					/*position: relative;*/
+					z-index: 10;
+					box-sizing: border-box;
+				}
+				.viewing-result #next-btn
+				{
+					display: block;
+					left: 0px;
+					bottom: 10px;
+					transition: left 0s 2.5s;
+				}
+
+				#welcome-container
+				{
+					padding: 10px 30px;
+					position: absolute;
+					top: 50vh;
+					left: 50vw;
+					transform: translate(-50%, -50%);
+					z-index: 1000;
+					font-size: 28px;
+					opacity: 0;
+					pointer-events: none;
+					text-align: center;
+				}
+				#welcome-btn
+				{
+					
+				}
+				#mask
+				{
+					width: 100vw;
+					max-width: 100%;
+					height:  100vh;
+					background-color: #eee;
+					/*opacity: 0.5;*/
+					z-index: 950;
+					position: absolute;
+					opacity: 0;
+					pointer-events: none;
+					transition: opacity 1s;
+				}
+				.viewing-welcome #mask
+				{
+					opacity: .5;
+					pointer-events: initial;
+				}
+				.viewing-welcome #welcome-container
+				{
+					opacity: 1;
+					pointer-events: initial;
+				}
+				.viewing-welcome #option-container
+				{
+					visibility: hidden;
+				}
+				.viewing-welcome #object
+				{
+					animation: saver 40s infinite linear;
+					transform: translate(-50%, -50%) scale(3);
+				}
+				.lux{
+					font-family: 'Luxurious Roman', cursive;
+				}
+				#prompt
+				{
+					position: absolute;
+					left: 20px;
+					top: 20px;
+				}
+				.viewing-welcome #prompt,
+				.viewing-result #prompt
+				{
+					opacity: 0;
+				}
+				#progression-container
+				{
+					/*font-weight: 300;*/
+					font-size: 72px;
+					position: absolute;
+					right: 75px;
+				}
+				.viewing-welcome #progression-container,
+				.viewing-result #progression-container
+				{
+					opacity: 0;
+				}
+				#step-total
+				{
+					position: absolute;
+					left: 48px;
+					top: 48px;
+				}
+				#step-total:before
+				{
+					content: '';
+					position: absolute;
+					border-top: 1px solid;
+					border-bottom: 1px solid;
+					width: 120px;
+					transform: translate(-65px, 20px) rotate(-50deg);
+				}
+
+				@keyframes saver {
+					0% {
+						background-color: blue;
+						-webkit-filter: blur(0);
+						filter: blur(0);
+					}
+					6.25% {
+						/*-webkit-filter: blur(100px);*/
+						/*filter: blur(100px);*/
+					}
+					12.5% {
+						background-color: red;
+						-webkit-filter: blur(0);
+						filter: blur(0);
+					}
+					18.75% {
+						/*-webkit-filter: blur(100px);*/
+						/*filter: blur(100px);*/
+					}
+					25% {
+						background-color: pink;
+						-webkit-filter: blur(0);
+						filter: blur(0);
+					}
+					31.25% {
+						/*-webkit-filter: blur(100px);*/
+						/*filter: blur(100px);*/
+					}
+					37.5% {
+						background-color: green;
+						-webkit-filter: blur(0);
+						filter: blur(0);
+					}
+					43.75% {
+						/*-webkit-filter: blur(100px);*/
+						/*filter: blur(100px);*/
+					}
+					50% {
+						background-color: orange;
+						-webkit-filter: blur(0);
+						filter: blur(0);
+					}
+					56.25% {
+						/*-webkit-filter: blur(100px);*/
+						/*filter: blur(100px);*/
+					}
+					62.5% {
+						background-color: purple;
+						-webkit-filter: blur(0);
+						filter: blur(0);
+					}
+					68.75%
+					{
+						/*-webkit-filter: blur(100px);*/
+						/*filter: blur(100px);*/
+					}
+					75% {
+						background-color: brown;
+						-webkit-filter: blur(0);
+						filter: blur(0);
+					}
+					81.25% {
+						/*-webkit-filter: blur(100px);*/
+						/*filter: blur(100px);*/
+					}
+					87.5% {
+						background-color: yellow;
+						-webkit-filter: blur(0);
+						filter: blur(0);
+					}
+					93.75% {
+						/*-webkit-filter: blur(100px);*/
+						/*filter: blur(100px);*/
+					}
+					100% {
+						background-color: blue;
+						-webkit-filter: blur(0);
+						filter: blur(0);
+					}
+				}
+		</style>
+		<script>
+			var body = document.getElementById("main-container");
+			
+			var occupation_options = [
+				'be a pilot',
+				'be a pharmacist',
+				'be a firefighter',
+				'be a doctor',
+				'join the navy',
+				'join the military',
+				'be an electrician',
+				'be a public driver',
+				'be a designer',
+				'be a police',
+				'be a chef',
+				'be a florist'
+			];
+			var main_idx = 0;
+			var main_idx_limit = 5;
+			document.getElementById('step-total').innerText = main_idx_limit;
+			var sProgresstion = document.getElementById('progression');
+			function shuffle(array) {
+				let currentIndex = array.length,  randomIndex;
+				// While there remain elements to shuffle...
+				while (currentIndex != 0) {
+					// Pick a remaining element...
+					randomIndex = Math.floor(Math.random() * currentIndex);
+					currentIndex--;
+					// And swap it with the current element.
+					[array[currentIndex], array[randomIndex]] = [
+						array[randomIndex], array[currentIndex]];
+				}
+				return array;
+			}
+			function swapColor(target){
+				shuffle(color_options);
+				let next_color_index = parseInt( Math.random() * color_options.length);
+				let next_color_code = color_options[next_color_index].code;
+				while(next_color_code == current_color_code)
+				{
+					next_color_index = parseInt( Math.random() * color_options.length);
+					next_color_code = color_options[next_color_index].code;
+				}
+				body.classList.add('transition');
+				setTimeout(function(){
+					current_color_index = next_color_index;
+					current_color_code = next_color_code;
+					// current_color_name = color_options[current_color_index].name;
+					target.style.backgroundColor = next_color_code;
+					body.setAttribute('hue', color_options[next_color_index].hue);
+					body.classList.remove('transition');
+					// console.log(current_color_index, color_options[current_color_index]);
+				}, 0);
+
+				
+				
+			}
+			function swapOptions(targets){
+				// console.log(current_color_index, color_options[current_color_index]);
+				let idx = 0;
+				[].forEach.call(targets, function(el, i){
+					if(idx == current_color_index)
+						idx++;
+					if(Math.random() < 0.5)
+						el.innerText = color_options[idx].name;
+					else
+						el.innerText = color_options[idx].code.toUpperCase();
+					idx++;
+				});
+			}
+			function swapOccupation(target_wrong, target_try = false){
+				if(target_try) {
+					let current_option_wrong = target_wrong.innerText;
+					let current_option_try = target_try.innerText;
+					let next_index_wrong = parseInt(Math.random() * occupation_options.length);
+					let next_option_wrong = occupation_options[next_index_wrong];
+					while(next_option_wrong == current_option_try)
+					{
+						next_index_wrong = parseInt(Math.random() * occupation_options.length);
+						next_option_wrong = occupation_options[next_index_wrong];
+					}
+					let next_index_try = parseInt(Math.random() * occupation_options.length);
+					let next_option_try = occupation_options[next_index_try];
+					while(next_option_try == next_option_wrong)
+					{
+						next_index_try = parseInt(Math.random() * occupation_options.length);
+						next_option_try = occupation_options[next_index_try];
+					}
+					target_wrong.innerText = next_option_wrong;
+					target_try.innerText = next_option_try;
+				} else {
+					let current_option_wrong = target_wrong.innerText;
+					let next_index_wrong = parseInt(Math.random() * occupation_options.length);
+					let next_option_wrong = occupation_options[next_index_wrong];
+					while(next_option_wrong == current_option_wrong)
+					{
+						next_index_wrong = parseInt(Math.random() * occupation_options.length);
+						next_option_wrong = occupation_options[next_index_wrong];
+					}
+					target_wrong.innerText = next_option_wrong;
+				}
+				
+			}
+
+			function swapQuestion(){
+				main_idx ++;
+				sProgresstion.innerText = main_idx % main_idx_limit + 1;
+				if(main_idx % main_idx_limit == 0)
+					body.classList.add('viewing-result');
+				else
+				{
+					swapColor(sObject);
+					setTimeout(function(){
+						swapOptions(sOptions, current_color_index);
+					}, 0);
+					swapOccupation(sOccupation_wrong);
+				}
+			}
+			
+			function swapScene(){
+				body.classList.remove('viewing-result');
+				body.classList.add('viewing-welcome');
+			}
+			
+			
+			shuffle(color_options);
+			var sContainer = document.getElementById('container');
+			var current_color_index = parseInt( Math.random() * color_options.length);
+			var current_color_code = color_options[current_color_index].code;
+			// var current_color_name = color_options[current_color_index].name;
+			body.setAttribute('hue', color_options[current_color_index].hue);
+			var sObject = document.getElementById('object');
+			swapColor(sObject);
+			var sOptions = document.getElementsByClassName('option');
+			swapOptions(sOptions, current_color_index);
+
+			var sOccupation_wrong = document.getElementById('occupation-wrong');
+
+			swapOccupation(sOccupation_wrong);
+
+			[].forEach.call(sOptions, function(el, i){
+				el.addEventListener('click', function(){
+					swapQuestion();
+				});
+			});
+			var sNext_btn = document.getElementById('next-btn');
+			sNext_btn.addEventListener('click', function(){
+				swapScene();
+			});
+			var wW = window.innerWidth;
+			var wH = window.innerHeight;
+			var object_size = 0.7 * Math.min(wW, wH);
+			sObject.style.height = object_size + 'px';
+			sObject.style.width = object_size + 'px';
+			window.addEventListener('resize', function(){
+				wW = window.innerWidth;
+				wH = window.innerHeight;
+				object_size = 0.7 * Math.min(wW, wH);
+				sObject.style.height = object_size + 'px';
+				sObject.style.width = object_size + 'px';
+			});
+
+
+			var sWelcome_btnn = document.getElementById('welcome-btn');
+			if(sWelcome_btnn) {
+				sWelcome_btnn.addEventListener('click', function(){ 
+					body.classList.remove('viewing-welcome'); 
+				});
+			}
+		</script>
 	</body>
 </html>
-<style>
-		*{margin: 0;padding: 0; font-weight: normal;}
-		body{font-family: helvetica, sans-serif;}
-		ul{list-style: none;}
-		#container
-		{
-			box-sizing: border-box;
-			display: flex;
-			flex-direction: column;
-			height: 100vh;
-			background-color: #ddd;
-			padding-bottom: 10px;
-		}
-		#main{
-			flex: 1;
-			position: relative;
-		}
-		#option-container
-		{
-			display: flex;
-			position: relative;
-			z-index: 10;
-		}
-		.viewing-result #option-container
-		{
-			opacity: 0;
-			pointer-events: none;
-		}
-		#object-container
-		{
-			width: 100%;
-			height: 100%;
-		}
-		#object
-		{
-			border-radius: 50%;
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			transform: translate(-50%, -50%);
-			transition: filter .75s, backdrop-filter.75s, transform .25s, background-color 1.5s;
-		}
-		.viewing-result #object
-		{
-			/*-webkit-backdrop-filter: blur(100px);*/
-			/*backdrop-filter: blur(100px);*/
-			-webkit-filter: blur(100px);
-			filter: blur(100px);
-			transform: translate(-50%, -50%) scale(1.2);
-		}
-		#title
-		{
-			position: fixed;
-			top: 10px;
-			left: 10px;
-			font-family: luxurious_romanregular, serif;
-			font-size: 28px;
-			line-height: 0.75em;
-			z-index: 1000;
-		}
-		#and
-		{
-			font-family: neonderthawregular, serif;
-			font-size: 2em;
-			position: relative;
-			top: 0.2em;
-			color: #fff;
-		}
-		#result-container
-		{
-			opacity: 0;
-			pointer-events: none;
-			position:  absolute;
-			max-width: 560px;
-			left: 50%;
-			top: 50%;
-			transform:  translate(-50%, -50%);
-			font-family: luxurious_romanregular, serif;
-			font-size: 40px;
-			line-height: 2em;
-			text-align: center;
-			
-		}
-		body[hue="dark"] #result-container
-		{
-			color: #ddd;
-		}
-		#result-container h1
-		{
-			/*color: #ddd;*/
-			/*-webkit-text-stroke-width: 1px;*/
-  			/*-webkit-text-stroke-color: black;*/
-		}
-		#result-container h3
-		{
-			font-family: sans-serif;
-			font-size: 28px;
-			line-height: 1em;
-			margin-top: 20px;
-		}
-		.viewing-result #result-container
-		{
-			opacity: 1;
-			transition: opacity 1s 1s;
-		}
-		.option-wrapper
-		{
-			flex: 1;
-			padding: 10px;
-			text-align: center;
-		}
-		.btn
-		{
-			
-			padding: 20px;
-			cursor: pointer;
-			font-size: 20px;
-			border: 5px solid #000;
-			border-top: 5px solid transparent;
-			border-left: 5px solid transparent;
-			background-color: #eee;
-		}
-		.btn:hover
-		{
-			background-color: #fff;
-			transition: background-color .25s;
-		}
-		.btn:active
-		{
-			background-color: #ddd;
-			border-top: 5px solid #000;
-			border-left: 5px solid #000;
-			border-right: 5px solid transparent;
-			border-bottom: 5px solid transparent;
-		}
-
-		#next-btn
-		{
-			position: absolute;
-			left: -10000px;
-			width: calc(100% - 20px);
-			margin: 10px 10px 10px 10px;
-			text-align: center;
-			/*position: relative;*/
-			z-index: 10;
-			box-sizing: border-box;
-		}
-		.viewing-result #next-btn
-		{
-			display: block;
-			left: 0px;
-			bottom: 10px;
-			transition: left 0s 2s;
-		}
-
-		#welcome-btn
-		{
-			padding: 10px 30px;
-			border: 2px solid #000;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			z-index: 1000;
-			cursor: pointer;
-			font-family: luxurious_romanregular, serif;
-			font-size: 28px;
-			opacity: 0;
-			pointer-events: none;
-		}
-		#welcome-btn:hover
-		{
-			background-color: #fff;
-		}
-		#mask
-		{
-			width: 100vw;
-			max-width: 100%;
-			height:  100vh;
-			background-color: #eee;
-			/*opacity: 0.5;*/
-			z-index: 950;
-			position: fixed;
-			opacity: 0;
-			pointer-events: none;
-			transition: opacity 1s;
-		}
-		.viewing-welcome #mask
-		{
-			opacity: .25;
-			pointer-events: initial;
-		}
-		.viewing-welcome #welcome-btn
-		{
-			opacity: 1;
-			pointer-events: initial;
-		}
-		.viewing-welcome #option-container
-		{
-			opacity: 0;
-		}
-		.viewing-welcome #object
-		{
-			animation: saver 40s infinite linear;
-			transform: translate(-50%, -50%) scale(3);
-		}
-
-		@keyframes saver {
-			0% {
-				background-color: blue;
-				-webkit-filter: blur(0);
-				filter: blur(0);
-			}
-			6.25% {
-				-webkit-filter: blur(100px);
-				filter: blur(100px);
-			}
-			12.5% {
-				background-color: red;
-				-webkit-filter: blur(0);
-				filter: blur(0);
-			}
-			18.75% {
-				-webkit-filter: blur(100px);
-				filter: blur(100px);
-			}
-			25% {
-				background-color: pink;
-				-webkit-filter: blur(0);
-				filter: blur(0);
-			}
-			31.25% {
-				-webkit-filter: blur(100px);
-				filter: blur(100px);
-			}
-			37.5% {
-				background-color: green;
-				-webkit-filter: blur(0);
-				filter: blur(0);
-			}
-			43.75% {
-				-webkit-filter: blur(100px);
-				filter: blur(100px);
-			}
-			50% {
-				background-color: orange;
-				-webkit-filter: blur(0);
-				filter: blur(0);
-			}
-			56.25% {
-				-webkit-filter: blur(100px);
-				filter: blur(100px);
-			}
-			62.5% {
-				background-color: purple;
-				-webkit-filter: blur(0);
-				filter: blur(0);
-			}
-			68.75%
-			{
-				-webkit-filter: blur(100px);
-				filter: blur(100px);
-			}
-			75% {
-				background-color: brown;
-				-webkit-filter: blur(0);
-				filter: blur(0);
-			}
-			81.25% {
-				-webkit-filter: blur(100px);
-				filter: blur(100px);
-			}
-			87.5% {
-				background-color: yellow;
-				-webkit-filter: blur(0);
-				filter: blur(0);
-			}
-			93.75% {
-				-webkit-filter: blur(100px);
-				filter: blur(100px);
-			}
-			100% {
-				background-color: blue;
-				-webkit-filter: blur(0);
-				filter: blur(0);
-			}
-		}
-</style>
-<script>
-	var body = document.body;
-	var color_options = [
-		{ name:'blue', hue: 'dark'},
-		{ name:'red', hue: 'dark'},
-		{ name:'pink', hue: 'light'},
-		{ name:'green', hue: 'dark'},
-		{ name:'orange', hue: 'light'},
-		{ name:'purple', hue: 'dark'},
-		{ name:'brown', hue: 'dark'},
-		{ name:'yellow', hue: 'light'}
-	];
-	var occupation_options = [
-		'be a pilot',
-		'be a pharmacist',
-		'be a firefighter',
-		'be a doctor',
-		'join the navy',
-		'join the military',
-		'be an electrician',
-		'be a public driver',
-		'be a designer',
-		'be a police',
-		'be a chef',
-		'be a florist'
-	];
-	function shuffle(array) {
-		let currentIndex = array.length,  randomIndex;
-		// While there remain elements to shuffle...
-		while (currentIndex != 0) {
-			// Pick a remaining element...
-			randomIndex = Math.floor(Math.random() * currentIndex);
-			currentIndex--;
-			// And swap it with the current element.
-			[array[currentIndex], array[randomIndex]] = [
-				array[randomIndex], array[currentIndex]];
-		}
-		return array;
-	}
-	function swapColor(target){
-		shuffle(color_options);
-		let next_color_index = parseInt( Math.random() * color_options.length);
-		let next_color = color_options[next_color_index].name;
-		while(next_color == current_color)
-		{
-			next_color_index = parseInt( Math.random() * color_options.length);
-			next_color = color_options[next_color_index].name;
-		}
-		setTimeout(function(){
-			current_color_index = next_color_index;
-			current_color = next_color;
-			target.style.backgroundColor = next_color;
-			body.setAttribute('hue', color_options[next_color_index].hue);
-			// console.log(current_color_index, color_options[current_color_index]);
-		}, 0);
-		
-		
-	}
-	function swapOptions(targets){
-		// console.log(current_color_index, color_options[current_color_index]);
-		let idx = 0;
-		[].forEach.call(targets, function(el, i){
-			if(idx == current_color_index)
-				idx++;
-			el.innerText = color_options[idx].name;
-			idx++;
-		});
-	}
-	function swapOccupation(target_wrong, target_try = false){
-		if(target_try) {
-			let current_option_wrong = target_wrong.innerText;
-			let current_option_try = target_try.innerText;
-			let next_index_wrong = parseInt(Math.random() * occupation_options.length);
-			let next_option_wrong = occupation_options[next_index_wrong];
-			while(next_option_wrong == current_option_try)
-			{
-				next_index_wrong = parseInt(Math.random() * occupation_options.length);
-				next_option_wrong = occupation_options[next_index_wrong];
-			}
-			let next_index_try = parseInt(Math.random() * occupation_options.length);
-			let next_option_try = occupation_options[next_index_try];
-			while(next_option_try == next_option_wrong)
-			{
-				next_index_try = parseInt(Math.random() * occupation_options.length);
-				next_option_try = occupation_options[next_index_try];
-			}
-			target_wrong.innerText = next_option_wrong;
-			target_try.innerText = next_option_try;
-		} else {
-			let current_option_wrong = target_wrong.innerText;
-			let next_index_wrong = parseInt(Math.random() * occupation_options.length);
-			let next_option_wrong = occupation_options[next_index_wrong];
-			while(next_option_wrong == current_option_wrong)
-			{
-				next_index_wrong = parseInt(Math.random() * occupation_options.length);
-				next_option_wrong = occupation_options[next_index_wrong];
-			}
-			target_wrong.innerText = next_option_wrong;
-		}
-		
-	}
-	
-	function swapScene(){
-		if(body.classList.contains('viewing-result'))
-		{
-			body.classList.remove('viewing-result');
-			swapColor(sObject);
-			setTimeout(function(){
-				swapOptions(sOptions, current_color_index);
-			}, 0);
-			swapOccupation(sOccupation_wrong);
-			
-		}
-		else
-		{
-			body.classList.add('viewing-result');
-		}
-	}
-	
-	shuffle(color_options);
-	var sContainer = document.getElementById('container');
-	var current_color_index = parseInt( Math.random() * color_options.length);
-	var current_color = color_options[current_color_index].color;
-	body.setAttribute('hue', color_options[current_color_index].hue);
-	var sObject = document.getElementById('object');
-	swapColor(sObject);
-	var sOptions = document.getElementsByClassName('option');
-	swapOptions(sOptions, current_color_index);
-
-	var sOccupation_wrong = document.getElementById('occupation-wrong');
-	// var sOccupation_try = document.getElementById('occupation-try');
-	swapOccupation(sOccupation_wrong);
-
-	[].forEach.call(sOptions, function(el, i){
-		el.addEventListener('click', function(){
-			swapScene();
-		});
-	});
-	var sNext_btn = document.getElementById('next-btn');
-	sNext_btn.addEventListener('click', function(){
-		swapScene();
-	});
-	var wW = window.innerWidth;
-	var wH = window.innerHeight;
-	var object_size = 0.7 * Math.min(wW, wH);
-	sObject.style.height = object_size + 'px';
-	sObject.style.width = object_size + 'px';
-	window.addEventListener('resize', function(){
-		wW = window.innerWidth;
-		wH = window.innerHeight;
-		object_size = 0.7 * Math.min(wW, wH);
-		sObject.style.height = object_size + 'px';
-		sObject.style.width = object_size + 'px';
-	});
-
-	window.addEventListener('keydown', function(e){
-		console.log(e.keyCode);
-		if(e.keyCode == '70')
-		{
-			screenfull.toggle(body);
-		}
-	});
-
-	let sWelcome_btn = document.getElementById('welcome-btn');
-	if(sWelcome_btn) sWelcome_btn.addEventListener('click', () => { body.classList.remove('viewing-welcome'); });
-</script>
